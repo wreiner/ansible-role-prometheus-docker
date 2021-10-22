@@ -1,0 +1,14 @@
+---
+prometheus_docker__image: "prom/prometheus"
+prometheus_docker__prometheus_version: "v2.30.3"
+
+prometheus_docker__data_dir: "/var/lib/docker/volumes/prometheus"
+prometheus_docker__config_dir: "{{ prometheus_docker__data_dir }}/etc"
+
+# standard value is 15d
+prometheus_docker__retention_time: "100y"
+
+prometheus_docker__timezone: "Europe/Vienna"
+
+prometheus_docker__system_user: "nobody"
+prometheus_docker__system_group: "nogroup"

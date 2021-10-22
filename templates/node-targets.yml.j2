@@ -1,0 +1,7 @@
+---
+- targets:
+{% for host in prometheus_docker__node_exporter_targets %}
+  - {{ host }}:9100
+{% endfor %}
+  labels:
+    job: node

@@ -1,0 +1,31 @@
+[Unit]
+Description=Prometheus server
+Requires=docker.service
+
+[Service]
+Restart=always
+RestartSec=3
+
+ExecStartPre=-/usr/bin/docker kill prometheus
+ExecStartPre=-/usr/bin/docker rm prometheus
+
+ExecStart=/usr/bin/docker run \
+        -p {{ prometheus_docker__listen_address }}:39090:9090 \
+        --name prometheus \
+        --hostname {{ inventory_hostname }} \
+        -e "TZ={{ prometheus_docker__timezone }}" \
+        -v {{ prometheus_docker__config_dir }}:/etc/prometheus \
+        -v {{ prometheus_docker__data_dir }}/data:/prometheus \
+        -v /etc/hosts:/etc/hosts:ro \
+         {{ prometheus_docker__image }}:{{ prometheus_docker__prometheus_version }} \
+         --config.file=/etc/prometheus/prometheus.yml \
+         --storage.tsdb.retention.time {{ prometheus_docker__retention_time }} \
+         --storage.tsdb.path /prometheus/db \
+         --web.enable-admin-api
+
+ExecStop=/usr/bin/docker stop -t 120 prometheus
+
+ExecReload=/usr/bin/docker exec prometheus /bin/sh -c "kill -HUP 1"
+
+[Install]
+WantedBy=multi-user.target

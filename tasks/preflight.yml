@@ -1,0 +1,13 @@
+---
+- name: "Create additional Prometheus directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ prometheus_docker__system_user }}"
+    group: "{{ prometheus_docker__system_group }}"
+    mode: 0750
+  with_items:
+    - "{{ prometheus_docker__data_dir }}/etc"
+    - "{{ prometheus_docker__data_dir }}/etc/rules"
+    - "{{ prometheus_docker__data_dir }}/data"
+

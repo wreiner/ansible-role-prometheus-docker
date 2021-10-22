@@ -1,0 +1,17 @@
+---
+- include_tasks: "preflight.yml"
+
+- name: "Deploy Prometheus service file"
+  template:
+    src: "prometheus.service.j2"
+    dest: "/etc/systemd/system/prometheus.service"
+  notify: "Restart prometheus"
+
+- name: "Deploy Prometheus config file"
+  template:
+    src: "prometheus.yml.j2"
+    dest: "{{ prometheus_docker__data_dir }}/etc/prometheus.yml"
+    owner: "{{ prometheus_docker__system_user }}"
+    group: "{{ prometheus_docker__system_group }}"
+    mode: 0640
+  notify: "Restart prometheus"

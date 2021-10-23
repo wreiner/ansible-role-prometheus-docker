@@ -12,3 +12,8 @@ prometheus_docker__timezone: "Europe/Vienna"
 
 prometheus_docker__system_user: "nobody"
 prometheus_docker__system_group: "nogroup"
+
+prometheus_docker__builtin_alert_rules:
+  - rule-blackbox-exporter.yml
+  - rule-node-exporter.yml
+  - rule-prometheus.yml

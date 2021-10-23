@@ -20,9 +20,20 @@
 - name: "Deploy Prometheus node targets"
   template:
     src: "node-targets.yml.j2"
-    dest: "{{ prometheus_docker__data_dir }}/etc/prometheus/node-targets.yml"
+    dest: "{{ prometheus_docker__data_dir }}/etc/node-targets.yml"
     owner: "{{ prometheus_docker__system_user }}"
     group: "{{ prometheus_docker__system_group }}"
     mode: 0640
   when: prometheus_docker__node_exporter_targets is defined
+  notify: "Restart prometheus"
+
+# alerts
+- name: "Deploy builtin rules files"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ prometheus_docker__data_dir }}/etc/rules/{{ item }}"
+    owner: "{{ prometheus_docker__system_user }}"
+    group: "{{ prometheus_docker__system_group }}"
+    mode: 0640
+  loop: "{{ prometheus_docker__builtin_alert_rules }}"
   notify: "Restart prometheus"

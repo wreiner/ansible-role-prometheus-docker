@@ -14,6 +14,13 @@ The container will be exposed to the _prometheus_docker__listen_address_ on port
 
 ## Optional Role Variables
 
+To add node-exporter targets the variable _prometheus_docker__node_exporter_targets_ can be set in the following format:
+
+```
+prometheus_docker__node_exporter_targets:
+  - X.Y.Z.A:9100@cleartext-hostname
+```
+
 To include notification through alertmanager define the alertmanager instances which should receive alerts:
 
 ```

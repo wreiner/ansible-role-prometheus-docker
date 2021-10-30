@@ -20,6 +20,25 @@ scrape_configs:
     file_sd_configs:
       - files:
         - '/etc/prometheus/node-targets.yml'
+    relabel_configs:
+      - source_labels: [ __address__ ]
+        regex: '(.*)@.*'
+        replacement: $1
+        target_label: __param_target
+      - source_labels: [ __address__ ]
+        regex: '(.*)@.*'
+        replacement: $1
+        target_label: app_ip
+      - source_labels: [ __address__ ]
+        regex: '.*@(.*)'
+        replacement: $1
+        target_label: instance
+      - source_labels: [ __address__ ]
+        regex: '(.*)@.*'
+        replacement: $1
+        target_label: __address__
+        #- target_label: __address__
+        #replacement: '{%raw%}{{ node_exporter_host }}:{{ node_exporter_port }}{%endraw%}'
 {% endif %}
 
 {% if prometheus_docker__alertmanager_targets is defined %}

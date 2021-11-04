@@ -33,3 +33,16 @@ Specify the prometheus version you want to deploy:
 ```
 prometheus_docker__prometheus_version: "v2.30.3"
 ```
+
+Optionally it is possible to add rule files for prometheus through the inventory:
+
+```
+prometheus_docker__inventory_alert_rules:
+- "{{ inventory_dir }}/prometheus_alert_rules/rule-backup.yml"
+```
+
+Those files are treated a Ansible template files. To escape ansible variables use:
+
+```
+{% raw %}{{ $prometheus.variable-to-escape }}{% endraw %}
+```

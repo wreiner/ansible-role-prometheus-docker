@@ -37,3 +37,14 @@
     mode: 0640
   loop: "{{ prometheus_docker__builtin_alert_rules }}"
   notify: "Restart prometheus"
+
+- name: "Deploy inventory rules files"
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_docker__data_dir }}/etc/rules/{{ item.split('/') | last }}"
+    owner: "{{ prometheus_docker__system_user }}"
+    group: "{{ prometheus_docker__system_group }}"
+  loop: "{{ prometheus_docker__inventory_alert_rules }}"
+  when: prometheus_docker__inventory_alert_rules is defined
+  notify:
+    - "Restart prometheus"

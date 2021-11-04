@@ -1,7 +1,7 @@
 ---
 # https://awesome-prometheus-alerts.grep.to/rules.html
 groups:
-  - name: "blackbox-exporter"
+  - name: "node-exporter"
     interval: 60s
     rules:
     - alert: HostOutOfMemory

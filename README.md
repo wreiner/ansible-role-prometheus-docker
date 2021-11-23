@@ -38,11 +38,28 @@ Optionally it is possible to add rule files for prometheus through the inventory
 
 ```
 prometheus_docker__inventory_alert_rules:
-- "{{ inventory_dir }}/prometheus_alert_rules/rule-backup.yml"
+- "{{ inventory_dir }}/templates/prometheus_alert_rules/rule-backup.yml"
 ```
 
 Those files are treated a Ansible template files. To escape ansible variables use:
 
 ```
 {% raw %}{{ $prometheus.variable-to-escape }}{% endraw %}
+```
+
+It is also possible to add additional scrape configs via the variable _prometheus_docker__additional_scrape_configs_:
+
+```
+prometheus_docker__additional_scrape_configs:
+  - job_name: 'federate'
+    scrape_interval: 15s
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{job="prometheus"}'
+        - '{job="snmp"}'
+    static_configs:
+      - targets:
+        - '1.3.2.4:9090'
 ```
